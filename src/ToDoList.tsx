@@ -1,5 +1,6 @@
 // import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { DefaultValue } from "recoil";
 
 /* function ToDoList() {
   const [toDo, setToDo] = useState("");
@@ -29,8 +30,21 @@ import { useForm } from "react-hook-form";
   );
 } */
 
+interface IForm {
+    email: string;
+    firstName: string;
+    lastName: string;
+    username: string;
+    password: string;
+    password1: string;
+}
+
 function ToDoList() {
-  const { register, watch, handleSubmit, formState } = useForm();
+  const { register, watch, handleSubmit, formState:{errors} } = useForm<IForm>({
+    defaultValues: {
+        email: "@naver.com"
+    }
+  });
   // register : 어떤 input을 관리하는지 (key)
   // watch : onChange 대체
   // handleSubmit : submit 대체
@@ -38,26 +52,40 @@ function ToDoList() {
     console.log(data);
   };
   //   console.log(watch());
-  console.log(formState.errors);
+  console.log(errors);
   return (
     <div>
       <form
         style={{ display: "flex", flexDirection: "column" }}
         onSubmit={handleSubmit(onValid)}
       >
-        <input {...register("email", { required: true })} placeholder="Email" />
         <input
-          {...register("firstName", { required: true })}
+          {...register("email", {
+            required: "이메일은 필수 입력 항목입니다",
+            pattern: {
+                value: /^[A-Za-z0-9._%+-]+@naver.com$/,
+                message: "naver.com 주소만 허용됩니다.",
+            }
+          })}
+          placeholder="Email"
+        />
+        {/* <span>{errors?.email?.message}</span> */}
+        <span>{errors?.email?.message as string}</span>
+        <input
+          {...register("firstName", { required: "필수 입력 항목입니다" })}
           placeholder="First Name"
         />
+        <span>{errors?.firstName?.message as string}</span>
         <input
-          {...register("lastName", { required: true })}
+          {...register("lastName", { required: "필수 입력 항목입니다" })}
           placeholder="Last Name"
         />
+        <span>{errors?.lastName?.message as string}</span>
         <input
-          {...register("username", { required: true, minLength: 10 })}
+          {...register("username", { required: "필수 입력 항목입니다", minLength: 10 })}
           placeholder="Username"
         />
+        <span>{errors?.username?.message as string}</span>
         <input
           {...register("password", {
             required: "패스워드가 필요합니다",
@@ -68,10 +96,12 @@ function ToDoList() {
           })}
           placeholder="Password"
         />
+        <span>{errors?.password?.message as string}</span>
         <input
-          {...register("password1", { required: true, minLength: 5 })}
+          {...register("password1", { required: "필수 입력 항목입니다", minLength: 5 })}
           placeholder="Password1"
         />
+        <span>{errors?.password1?.message as string}</span>
         <button>Add</button>
       </form>
     </div>
