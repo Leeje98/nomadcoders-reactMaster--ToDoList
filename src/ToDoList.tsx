@@ -30,21 +30,52 @@ import { useForm } from "react-hook-form";
 } */
 
 function ToDoList() {
-    const { register, watch } = useForm();
-    console.log(watch());
-    return (
-        <div>
-          <form>
-            <input {...register("email")} placeholder="Email" /><br />
-            <input {...register("firstName")} placeholder="First Name" /><br />
-            <input {...register("lastName")} placeholder="Last Name" /><br />
-            <input {...register("username")} placeholder="Username" /><br />
-            <input {...register("password")} placeholder="Password" /><br />
-            <input {...register("password1")} placeholder="Password1" /><br />
-            <button>Add</button>
-          </form>
-        </div>
-      );
+  const { register, watch, handleSubmit, formState } = useForm();
+  // register : 어떤 input을 관리하는지 (key)
+  // watch : onChange 대체
+  // handleSubmit : submit 대체
+  const onValid = (data: any) => {
+    console.log(data);
+  };
+  //   console.log(watch());
+  console.log(formState.errors);
+  return (
+    <div>
+      <form
+        style={{ display: "flex", flexDirection: "column" }}
+        onSubmit={handleSubmit(onValid)}
+      >
+        <input {...register("email", { required: true })} placeholder="Email" />
+        <input
+          {...register("firstName", { required: true })}
+          placeholder="First Name"
+        />
+        <input
+          {...register("lastName", { required: true })}
+          placeholder="Last Name"
+        />
+        <input
+          {...register("username", { required: true, minLength: 10 })}
+          placeholder="Username"
+        />
+        <input
+          {...register("password", {
+            required: "패스워드가 필요합니다",
+            minLength: {
+              value: 5,
+              message: "최소 5글자 이상으로 설정해주세요",
+            },
+          })}
+          placeholder="Password"
+        />
+        <input
+          {...register("password1", { required: true, minLength: 5 })}
+          placeholder="Password1"
+        />
+        <button>Add</button>
+      </form>
+    </div>
+  );
 }
 
 export default ToDoList;
