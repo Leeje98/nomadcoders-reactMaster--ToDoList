@@ -20,10 +20,13 @@ export const toDoSelector = selector({
   key: "toDoSelector",
   get: ({ get }) => {
     const toDos = get(toDoState);
-    return [  // r filter: 조건에 맞는 원소들만 담은 배열을 리턴
-      toDos.filter((toDo) => toDo.category === "TO_DO"),  // [{}, {}]
-      toDos.filter((toDo) => toDo.category === "DOING"),  // [{}, {}]
-      toDos.filter((toDo) => toDo.category === "DONE"),   // [{}, {}]
-    ];  // [[{}, {}], [{}, {}], [{}, {}]] 이런 모양 (배열안의 배열)
+    const category = get(categoryState);
+    // if (category === "TO_DO") 
+    //   return toDos.filter((toDo) => toDo.category === "TO_DO");
+    // if (category === "DOING") 
+    //   return toDos.filter((toDo) => toDo.category === "DOING");
+    // if (category === "DONE") 
+    //   return toDos.filter((toDo) => toDo.category === "DONE");
+    return toDos.filter((toDo) => toDo.category === category);
   },
 });

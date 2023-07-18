@@ -1,49 +1,36 @@
 // import React, { useState } from "react";
 // import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import CreateToDo from "./CreateToDo";
-import { toDoSelector, toDoState } from "../atoms";
+import { categoryState, toDoSelector, toDoState } from "../atoms";
 import ToDo from "./ToDo";
- 
 
 function ToDoList() {
-  // const toDos = useRecoilValue(toDoState); 
+  // const toDos = useRecoilValue(toDoState);
   // console.log(toDos);
-  const [toDo, doing, done] = useRecoilValue(toDoSelector)
-        // ㄴapi 파일의 toDoSelector 함수의 리턴값 모양 그대로 불러오기 
+  const toDos = useRecoilValue(toDoSelector);
   // console.log(selectorOutput);
+  const [category, setCategory] = useRecoilState(categoryState);
+  const oninput = (event: React.FormEvent<HTMLSelectElement>) => {
+    setCategory(event.currentTarget.value);
+  };
+  console.log(category);
 
   return (
     <div>
       <h1>To Dos</h1>
+      <hr />
+      <select value={category} onInput={oninput}>
+        <option value="TO_DO">To Do</option>
+        <option value="DOING">Doing</option>
+        <option value="DONE">Done</option>
+      </select>
       <CreateToDo />
-      <hr />
-      <h2>To Do</h2>
-      <ul>
-        {/* {toDos.map((toDo) => <ToDo text={toDo.text} category={toDo.category} id={toDo.id} />)} */}
-        {/* {toDos.map((toDo) => <ToDo {...toDo}/>)}  윗줄과 동일내용임 */}
-        {toDo.map((toDo) => (
-          <ToDo key={toDo.id} {...toDo}/>
-        ))} 
-      </ul>
-      <hr />
-      <h2>Doing</h2>
-      <ul> 
-        {doing.map((toDo) => (
-          <ToDo key={toDo.id} {...toDo}/>
-        ))} 
-      </ul>
-      <hr />
-      <h2>Done</h2>
-      <ul> 
-        {done.map((toDo) => (
-          <ToDo key={toDo.id} {...toDo}/>
-        ))} 
-      </ul>
-      <hr />
+      {toDos?.map((toDo) => (
+        <ToDo key={toDo.id} {...toDo} />
+      ))}
     </div>
   );
-} 
- 
+}
 
 export default ToDoList;
