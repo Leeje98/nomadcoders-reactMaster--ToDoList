@@ -2,7 +2,7 @@
 // import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { useRecoilState, useRecoilValue } from "recoil";
 import CreateToDo from "./CreateToDo";
-import { Categories, categoryState, toDoSelector, toDoState } from "../atoms";
+import { Categories, categoryState, toDoSelector } from "../atoms";
 import ToDo from "./ToDo";
 
 function ToDoList() {
