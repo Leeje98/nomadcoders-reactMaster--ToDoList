@@ -1,10 +1,11 @@
 import { atom, selector } from "recoil";
+import { recoilPersist } from "recoil-persist";
 
 
 // export enum Categories {  // enum 은 기본적으로 어떤 문자로 정의되었던 간에 인덱스 숫자로 인식한다
-//   "TO_DO",
-//   "DOING",
-//   "DONE",
+//   "TO_DO",  // 0
+//   "DOING",  // 1
+//   "DONE",   // 2
 // }
 export enum Categories {  
   "TO_DO" = "TO_DO",
@@ -24,9 +25,16 @@ export const categoryState = atom<Categories>({
     default: Categories.TO_DO,
 })
 
+// 아무것도 설정하지 않고 쓰는 경우 localStorage에 저장되며, key 이름은 'recoil-persist'로 저장됨
+const { persistAtom } = recoilPersist({
+  key: 'ToDoLocal',
+  storage: localStorage,
+});
+
 export const toDoState = atom<IToDo[]>({
   key: "toDo",
   default: [],
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const toDoSelector = selector({
