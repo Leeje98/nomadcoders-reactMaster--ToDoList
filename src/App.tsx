@@ -1,5 +1,5 @@
-import React from 'react'
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
+import React from "react";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 function App() {
   const onDragEnd = () => {};
@@ -7,18 +7,36 @@ function App() {
     <DragDropContext onDragEnd={onDragEnd}>
       <div>
         <Droppable droppableId="one">
-          {() => <ul>
-            <Draggable draggableId='first' index={0}>
-              {() => <li>One</li>}
-            </Draggable>  
-            <Draggable draggableId='second' index={1}>
-              {() => <li>Two</li>}
-            </Draggable>  
-          </ul>}
+          {(magic) => (
+            <ul ref={magic.innerRef} {...magic.droppableProps}>
+              <Draggable draggableId="first" index={0}>
+                {(magic) => (
+                  <li
+                    ref={magic.innerRef}
+                    {...magic.draggableProps}
+                  >
+                    <span {...magic.dragHandleProps}>🔥</span>
+                    One
+                  </li>
+                )}
+              </Draggable>
+              <Draggable draggableId="second" index={1}>
+                {(magic) => (
+                  <li
+                    ref={magic.innerRef}
+                    {...magic.draggableProps}
+                  >
+                    <span {...magic.dragHandleProps}>🔥</span>
+                    Two
+                  </li>
+                )}
+              </Draggable>
+            </ul>
+          )}
         </Droppable>
       </div>
     </DragDropContext>
-  )
+  );
 }
 
-export default App
+export default App;
